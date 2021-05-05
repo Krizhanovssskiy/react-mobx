@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useObserver } from "mobx-react-lite";
+import { useRootStore } from "./root-store/RootStateContext";
+import Header from "./components/header";
+import ModalComponent from "./components/modal-component";
+import AddUserForm from "./modules/add-user-form";
+import TableUsers from "./modules/table-users";
 
-function App() {
-  return (
+const App = () => {
+  const { notesStore, popupFormAddUser } = useRootStore();
+
+  return useObserver(() => (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <TableUsers />
+
+      <ModalComponent
+        openPopup={popupFormAddUser.condition}
+        togglePopup={popupFormAddUser.toggleCondition}
+      >
+        <AddUserForm />
+      </ModalComponent>
     </div>
-  );
-}
+  ));
+};
 
 export default App;
